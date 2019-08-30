@@ -57,10 +57,8 @@ def enteredAndOrdained(ax):
     #create dataframes based on ordinations and entrants
     entered = ax.groupby(["YearEntered"]).size().reset_index(name = "Frequency Year")
     ordained = ax.groupby(["YearOrdained"]).size().reset_index(name = "Frequency Year")
-    fig.add_trace(go.Scatter( x = entered["YearEntered"],
-                y = entered["Frequency Year"], mode = 'lines+markers'))
-    fig.add_trace(go.Scatter( x = ordained["YearOrdained"],
-                y = ordained["Frequency Year"], mode = 'lines+markers'))
+    fig.add_trace(go.Scatter( x = entered["YearEntered"], y = entered["Frequency Year"], mode = 'lines+markers',name = "Entered"))
+    fig.add_trace(go.Scatter( x = ordained["YearOrdained"], y = ordained["Frequency Year"], mode = 'lines+markers',name = "Ordained,"))
 
     # Add range slider
     fig.update_layout(
@@ -94,6 +92,7 @@ def enteredAndOrdained(ax):
     )
 
     fig.show()
+    fig.write_image("images/fig1.svg")
 #==============================================================================
 
 #==============================================================================
@@ -145,6 +144,7 @@ def dioceseTime(ax,diocese):
         )
 
     fig.show()
+    fig.write_image("images/fig2.svg")
 #==============================================================================
 
 #==============================================================================
@@ -209,6 +209,7 @@ def nodeGraph(ax,c1,c2,wantToSee):
     trace1=Scatter(x=Xed,
                    y=Yed,
                    mode='lines',
+                   name = "Links",
                    line=dict(color='#cc1da3', width=0.25),
                    hoverinfo='none'
                    )
@@ -247,6 +248,7 @@ def nodeGraph(ax,c1,c2,wantToSee):
     plio.write_html(fig1, "nodeGraph.html", include_plotlyjs = True)
 
     iplot(fig1)
+    fig1.write_image("images/fig3.svg")
 #==============================================================================
 
 #==============================================================================
@@ -283,6 +285,7 @@ def map(diocese):
     freq = [x[1] for x in freqFilter]
     geoMap["Frequency"] = freq
     #plot the data
+    plt.set_cmap('Blues')
     geoMap.plot(column = "Frequency", legend = True)
     plt.axis('off')
     plt.show()
